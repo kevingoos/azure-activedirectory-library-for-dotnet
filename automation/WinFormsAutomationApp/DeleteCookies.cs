@@ -151,7 +151,7 @@ namespace WinFormsAutomationApp
             cacheEntryInfoBuffer = Marshal.AllocHGlobal(cacheEntryInfoBufferSize);
             enumHandle = FindFirstUrlCacheEntry(null, cacheEntryInfoBuffer, ref cacheEntryInfoBufferSizeInitial);
 
-            while (true)
+            /*while (true)
             {
                 internetCacheEntry = (INTERNET_CACHE_ENTRY_INFOA)Marshal.PtrToStructure(cacheEntryInfoBuffer, typeof(INTERNET_CACHE_ENTRY_INFOA));
 
@@ -171,7 +171,7 @@ namespace WinFormsAutomationApp
                     cacheEntryInfoBuffer = Marshal.ReAllocHGlobal(cacheEntryInfoBuffer, (IntPtr)cacheEntryInfoBufferSize);
                     returnValue = FindNextUrlCacheEntry(enumHandle, cacheEntryInfoBuffer, ref cacheEntryInfoBufferSizeInitial);
                 }
-            }
+            }*/
             Marshal.FreeHGlobal(cacheEntryInfoBuffer);
         }
     }
