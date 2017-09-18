@@ -155,5 +155,23 @@ namespace Test.ADAL.NET.Unit
             Assert.AreEqual("login.microsoftonline.com", entry2.PreferredNetwork);
             Assert.AreEqual(1, HttpMessageHandlerFactory.MockHandlersCount()); // Still 1 mock response remaining, so no new request was attempted
         }
+
+        [TestMethod]
+        [TestCategory("InstanceDiscoveryTests")]
+        public async Task TestGetOrderedAliases_ShouldStartWithPreferredCacheAndGivenHost()
+        {
+            string givenHost = "sts.microsoft.com";
+            string preferredCache = "login.windows.net";
+            InstanceDiscovery.InstanceCache.TryAdd(givenHost, new InstanceDiscoveryMetadataEntry
+            {
+                PreferredNetwork = "login.microsoftonline.com",
+                PreferredCache = preferredCache,
+                Aliases = new string[] { "login.microsoftonline.com", "login.windows.net", "sts.microsoft.com" }
+            });
+            var orderedList = await AcquireTokenHandlerBase.GetOrderedAliases(givenHost, false, new CallState(Guid.NewGuid()));
+            CollectionAssert.AreEqual(
+                new string[] { preferredCache, givenHost, "login.microsoftonline.com", "login.windows.net", "sts.microsoft.com" },
+                orderedList);
+        }
     }
 }
