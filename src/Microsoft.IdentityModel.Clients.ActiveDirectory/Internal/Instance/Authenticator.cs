@@ -98,7 +98,8 @@ namespace Microsoft.IdentityModel.Clients.ActiveDirectory
                 var host = authorityUri.Host;
                 string path = authorityUri.AbsolutePath.Substring(1);
                 string tenant = path.Substring(0, path.IndexOf("/", StringComparison.Ordinal));
-                await InstanceDiscovery.GetMetadataEntry(host, this.ValidateAuthority, callState);
+                var metadata = await InstanceDiscovery.GetMetadataEntry(host, this.ValidateAuthority, callState);
+                host = metadata.PreferredNetwork;
                 this.AuthorizationUri = InstanceDiscovery.FormatAuthorizeEndpoint(host, tenant);
                 this.DeviceCodeUri = $"https://{host}/{tenant}/oauth2/devicecode";
                 this.TokenUri = $"https://{host}/{tenant}/oauth2/token";
